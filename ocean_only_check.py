@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#SBATCH --job-name=TH3_oceanic_check
+#SBATCH --job-name=CV5_oceanic_check
 #SBATCH --ntasks=1
 #SBATCH --mem=16Gb
 #SBATCH --partition=nodes
@@ -42,11 +42,11 @@ def oceanic_airmass(f, days=5):
                     is_oceanic = 0.
                     #print( x, y )
         else:
-            return ds.title[-12:], is_oceanic
+            return ds.title[-12:], is_oceanic, d
 
 ##############################-MAIN-SCRIPT-#####################################
 def main():
-    site    ='tudor_hill'     ## Select site for analysis 
+    site    ='hateruma'     ## Select site for analysis 
     run_for = "20"      ## Select year/s. For all I can use "20"
     days    = 3         ## Number of days to check only oceanic
     
@@ -57,15 +57,16 @@ def main():
     
     ## For each file for n days determine whether trajectory passed over land 
     ## oceanic==1, land==0 
-    dates=[] ; results=[] 
+    dates=[] ; results=[] ; times=[]
     for f in file_list:
         print( f )
-        date, result =  oceanic_airmass( f, days=days ) 
+        date, result, time =  oceanic_airmass( f, days=days ) 
         dates.append( date )
         results.append( result )
+        times.append( time )
     
     ## Convert result to dataframe and save to csv file
-    df = pd.DataFrame( { 'is_oceanic' : results } , index=dates )
+    df = pd.DataFrame( { 'is_oceanic' : results, 'time' : times } , index=dates )
     df.to_csv(f'csv_files/{site}_{days}days_all.csv')
     
 if __name__=="__main__":

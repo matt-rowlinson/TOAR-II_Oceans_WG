@@ -46,7 +46,7 @@ def oceanic_airmass(f, days=5):
 
 ##############################-MAIN-SCRIPT-#####################################
 def main():
-    site    ='mace_head'    ## Select site for analysis 
+    site    ='ragged_point'    ## Select site for analysis 
     run_for = "20"          ## Select year/s. For all years I can just use "20"
     days    = 5             ## Number of days to check only oceanic
     
